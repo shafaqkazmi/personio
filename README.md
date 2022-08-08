@@ -1,46 +1,55 @@
-# Getting Started with Create React App
+# Frontend Engineer - Coding Challenge
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Introduction
+Maria works at Personio as a recruiter. She has to sift through a lot of applications every day to find the
+best possible talent for her favourite company! In order to help her do it efficiently, she uses a small
+application which displays all the relevant candidate information in a table:
 
-## Available Scripts
+Lately, Maria has been even busier because Personio started to get more awesome candidate applications.
+The table got too cluttered with information, and she needs a better way to filter the incoming
+applications. We've invited you to help her build a new and optimized version of her recruiting application.
+After some alignments with Maria, you found out that she would like to:
+- See the list with all applications showing the following data:
+  - Name (string)
+  - Email (string)
+  - Age (string - birthday)
+  - Years of experience (number)
+  - Position applied (string)
+  - Date of application (string)
+  - Status of the application (string: approved | rejected |waiting)
+- Sort by:
+  - Position applied
+  - Years of experience
+  - Date of application
+- Filter by:
+  - Name
+  - Status (approved/reject/waiting)
+  - Position applied
+- Have the URL changed every time she applies sorting or filtering so that she could share this URL
+with her colleagues
+- Example: If she is filtering by the position applied, the URL should change in a way that if
+she reloads the page, it should show the same data that she was looking for before.
 
-In the project directory, you can run:
-
-### `npm start`
-
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
-
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+Maria is opened for you to improve the UI in whatever way you see fit.
+Backend engineers offered an endpoint for you to access applicants data:
+http://personio-fe-test.herokuapp.com/api/v1/candidates . This endpoint is known to be somewhat buggy,
+and it will return errors and occasional delays, so be ready to process these accordingly!
+### Nonfunctional requirements
+- Use React.js to accomplish the task. This is where you can show off your skills and knowledge
+about the react ecosystem. Feel free to use state management and routing related libraries. You
+can use any utility libraries like lodash or underscore.
+- Please, do not use any list rendering libraries (e.g. react table) for react. It would be great to see
+which components you will create yourself to tackle the task.
+### What has to be delivered
+- Provide a deadline by when you'll hand in your solution.
+- An archive containing a .git folder. Best would be to have a commit history that represents your
+natural working process (so, if possible, no history rewrites / rebase).
+- Instructions on how to bootstrap your app (in Readme.md of your repository).
+### What do we look at when checking out the solution
+- UX and Functionality
+- UI and Styling structure
+- Code quality
+- Architecture and Scalability
+### Duration and effort
+Before implementation please timebox the implementation effort to maximum six hours in total.
+The main thing - have fun!
