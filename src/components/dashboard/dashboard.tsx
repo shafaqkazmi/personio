@@ -23,7 +23,7 @@ export const Dashboard = () => {
     { value: "Year of Experience", key: "yearOfExperience" },
     { value: "Position Applied", key: "positionApplied" },
     { value: "Applied On", key: "applicationDate" },
-    { value: "Status", key: "status" },
+    { value: "Status", key: "status", hasCss: true },
   ];
 
   const handleSearchParams = (_filter: string, _filterBy: string) => {
@@ -59,18 +59,24 @@ export const Dashboard = () => {
 
   return (
     <>
-      <h1 onClick={() => navigate("/")}>Applications</h1>
+      <h1 className="breadcrumb" onClick={() => navigate("/")}>
+        Applications
+      </h1>
       {loading && <Loader />}
       {error && <div>Error</div>}
       {!loading && !error && (
-        <div>
-          <DashboardTableFilter handleSearchParams={handleSearchParams} />
-          <DashboardTable
-            columns={rowColumns}
-            rowData={sortedAndFilterData()}
-            handleSortSearchParams={handleSortSearchParams}
-          />
-        </div>
+        <>
+          <div className="container">
+            <DashboardTableFilter handleSearchParams={handleSearchParams} />
+          </div>
+          <div className="container">
+            <DashboardTable
+              columns={rowColumns}
+              rowData={sortedAndFilterData()}
+              handleSortSearchParams={handleSortSearchParams}
+            />
+          </div>
+        </>
       )}
     </>
   );

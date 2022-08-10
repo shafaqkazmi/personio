@@ -11,7 +11,8 @@ enum SortBy {
 type IColumns = {
   value: string;
   key: string;
-}
+  hasCss?: boolean;
+};
 
 type IDashboardTable = {
   columns: IColumns[];
@@ -37,7 +38,7 @@ export const DashboardTable: React.FunctionComponent<IDashboardTable> = ({
     Object.values(SortBy).includes(key as SortBy);
 
   return (
-    <table className="table">
+    <table>
       <thead>
         <tr>
           {columns.map(({ value, key }) => (
@@ -46,11 +47,9 @@ export const DashboardTable: React.FunctionComponent<IDashboardTable> = ({
               {isSortAble(key) && (
                 <a
                   href=""
-                  className={sort ? "sorted" : ""}
+                  className={`sort-by ${sort === key ? "selected" : ""}`}
                   onClick={() => onSortChange(key)}
-                >
-                  sort
-                </a>
+                />
               )}
             </th>
           ))}
@@ -59,9 +58,12 @@ export const DashboardTable: React.FunctionComponent<IDashboardTable> = ({
       <tbody>
         {rowData.map((candidate: ICandidate, index) => (
           <tr key={index}>
-            {columns.map(({ key }) => (
-              <td key={key}>{candidate[key as keyof ICandidate]}</td>
-            ))}
+            {columns.map(({ key, hasCss }) => {
+              const colValue = candidate[key as keyof ICandidate];
+              return <td className={`${hasCss ? colValue : ""}`} key={key}>
+              {colValue}
+            </td>
+            })}
           </tr>
         ))}
       </tbody>
