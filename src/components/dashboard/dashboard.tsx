@@ -3,20 +3,22 @@ import { AppConfig } from "../../config/app-config";
 import { useFetch } from "../../hooks/use-fetch";
 import { ICandidate } from "../../interface/candidate";
 import { SortArrayByKey } from "../../utils/utils";
-import { Loader } from "../loading/loading";
+import { Error } from "../error/error";
+import { Loader } from "../loader/loader";
+import { FilterType, IColumns } from "./dasboard-types";
 import { DashboardTable } from "./dashbaoard-table";
-import { FilterType, DashboardTableFilter } from "./dashboard-table-filter";
+import { DashboardTableFilter } from "./dashboard-table-filter";
 
 export const Dashboard = () => {
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
-  const { loading, error, data = [] } = useFetch(AppConfig.defaultUrl);
+  const { data, loading, error } = useFetch({ url: AppConfig.defaultUrl });
 
-  const filter = searchParams.get("filter") || "";
+  const filter = decodeURI(searchParams.get("filter") || "").trim();
   const filterBy = searchParams.get("filterBy") || "";
   const sort = searchParams.get("sort") || "";
 
-  const rowColumns = [
+  const rowColumns: Array<IColumns> = [
     { value: "Name", key: "name" },
     { value: "Email", key: "email" },
     { value: "Age", key: "age" },
@@ -38,7 +40,7 @@ export const Dashboard = () => {
     const filteredData = data.filter((candidate: ICandidate) => {
       switch (filterBy) {
         case FilterType.Name:
-          return candidate.status.includes(filter);
+          return candidate.name.includes(filter);
         case FilterType.Position:
           return candidate.positionApplied.includes(filter);
         case FilterType.Status:
@@ -50,7 +52,7 @@ export const Dashboard = () => {
 
     if (sort) {
       return filteredData.sort((a: ICandidate, b: ICandidate) =>
-        SortArrayByKey(a, b, sort, "asc")
+        SortArrayByKey(a, b, sort)
       );
     }
 
@@ -62,9 +64,9 @@ export const Dashboard = () => {
       <h1 className="breadcrumb" onClick={() => navigate("/")}>
         Applications
       </h1>
-      {loading && <Loader />}
-      {error && <div>Error</div>}
-      {!loading && !error && (
+      {error && <Error />}
+      {loading || (!data && <Loader />)}
+      {!loading && !error && data && (
         <>
           <div className="container">
             <DashboardTableFilter handleSearchParams={handleSearchParams} />

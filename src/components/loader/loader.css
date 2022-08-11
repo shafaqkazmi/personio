@@ -6,6 +6,7 @@
     justify-content: center;
     text-align: center;
     opacity: 0.5;
+    height: 100%;
 }
 
 .overlay span {

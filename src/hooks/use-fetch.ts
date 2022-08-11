@@ -1,8 +1,18 @@
-import React from "react";
 import { useEffect, useState } from "react";
 import { CamelizeJsonKeys } from "../utils/utils";
 
-export const useFetch = (url: string, options?: RequestInit) => {
+type IFetchParams = {
+  url: string;
+  options?: RequestInit;
+};
+
+type IFetchState = {
+  loading: boolean;
+  error?: any;
+  data?: any;
+};
+
+export const useFetch = ({ url, options }: IFetchParams): IFetchState => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -16,13 +26,11 @@ export const useFetch = (url: string, options?: RequestInit) => {
     async function fetchData() {
       try {
         const response = await fetch(url, options);
-        const { error, data } = await response.json();
+        if (!response.ok) throw new Error(response.statusText);
 
-        if (data) {
-          setData(CamelizeJsonKeys(data));
-        } else {
-          onFetchError(error.message);
-        }
+        const { data } = await response.json();
+
+        setData(CamelizeJsonKeys(data));
       } catch (_error: any) {
         onFetchError(_error.message);
       } finally {

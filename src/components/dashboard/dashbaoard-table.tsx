@@ -1,26 +1,9 @@
 import React, { useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { ICandidate } from "../../interface/candidate";
+import { IDashboardTable, SortBy } from "./dasboard-types";
 
-enum SortBy {
-  PositionApplied = "positionApplied",
-  YearOfExperience = "yearOfExperience",
-  ApplicationDate = "applicationDate",
-}
-
-type IColumns = {
-  value: string;
-  key: string;
-  hasCss?: boolean;
-};
-
-type IDashboardTable = {
-  columns: IColumns[];
-  rowData: ICandidate[];
-  handleSortSearchParams: (sort: string) => void;
-};
-
-export const DashboardTable: React.FunctionComponent<IDashboardTable> = ({
+export const DashboardTable: React.FC<IDashboardTable> = ({
   columns,
   rowData,
   handleSortSearchParams,
@@ -45,8 +28,7 @@ export const DashboardTable: React.FunctionComponent<IDashboardTable> = ({
             <th key={key}>
               <span>{value}</span>
               {isSortAble(key) && (
-                <a
-                  href=""
+                <button
                   className={`sort-by ${sort === key ? "selected" : ""}`}
                   onClick={() => onSortChange(key)}
                 />

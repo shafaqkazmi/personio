@@ -1,18 +1,18 @@
 import { camelCase } from "lodash";
 
 export function SortArrayByKey(
-  a: any,
-  b: any,
+  fieldA: any,
+  fieldB: any,
   key: string,
-  dir: "asc" | "desc"
+  dir?: "asc" | "desc"
 ): number {
-  const fieldA = a[key];
-  const fieldB = b[key];
+  const valueA = fieldA[key];
+  const valueB = fieldB[key];
 
   let comparison = 0;
-  if (fieldA > fieldB) {
+  if (valueA > valueB) {
     comparison = 1;
-  } else if (fieldA < fieldB) {
+  } else if (valueA < valueB) {
     comparison = -1;
   }
   return dir === "desc" ? comparison * -1 : comparison;

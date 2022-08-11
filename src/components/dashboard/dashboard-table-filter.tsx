@@ -1,20 +1,9 @@
 import { useEffect, useMemo, useState } from "react";
 import { debounce } from "lodash";
+import { FilterProps, FilterType, Filter_Debounce_Timer } from "./dasboard-types";
 
-export enum FilterType {
-  Name = "name",
-  Status = "status",
-  Position = "position",
-}
-
-type AppProps = {
-  handleSearchParams: (filter: string, filterBy: string) => void;
-};
-
-const Filter_Debounce_Timer = 300;
-
-export const DashboardTableFilter = ({ handleSearchParams }: AppProps) => {
-  const [filter, setFilter] = useState("");
+export const DashboardTableFilter = ({ handleSearchParams }: FilterProps) => {
+  const [filter, setFilter] = useState('');
   const [filterBy, setFilterBy] = useState(FilterType.Name);
 
   const onFilterChange = (event: any) => {
