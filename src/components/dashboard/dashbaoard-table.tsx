@@ -1,24 +1,23 @@
 import React, { useState } from "react";
-import { useSearchParams } from "react-router-dom";
 import { ICandidate } from "../../interface/candidate";
 import { IDashboardTable, SortBy } from "./dasboard-types";
 
 export const DashboardTable: React.FC<IDashboardTable> = ({
+  initialSortBy,
   columns,
   rowData,
   handleSortSearchParams,
 }) => {
-  const [searchParams] = useSearchParams();
-  const defaultSort = searchParams.get("sort") || "";
-  const [sort, setSort] = useState(defaultSort);
+  const [sortBy, setSortBy] = useState(initialSortBy);
 
-  const onSortChange = (key: string) => {
-    setSort(key);
+  function onSortChange(key: string) {
+    setSortBy(key);
     handleSortSearchParams(key);
-  };
+  }
 
-  const isSortAble = (key: string) =>
-    Object.values(SortBy).includes(key as SortBy);
+  function isSortAble(key: string) {
+    return Object.values(SortBy).includes(key as SortBy);
+  }
 
   return (
     <table>
@@ -29,7 +28,7 @@ export const DashboardTable: React.FC<IDashboardTable> = ({
               <span>{value}</span>
               {isSortAble(key) && (
                 <button
-                  className={`sort-by ${sort === key ? "selected" : ""}`}
+                  className={`sort-by ${sortBy === key ? "selected" : ""}`}
                   onClick={() => onSortChange(key)}
                 />
               )}
@@ -38,16 +37,26 @@ export const DashboardTable: React.FC<IDashboardTable> = ({
         </tr>
       </thead>
       <tbody>
-        {rowData.map((candidate: ICandidate, index) => (
-          <tr key={index}>
-            {columns.map(({ key, hasCss }) => {
-              const colValue = candidate[key as keyof ICandidate];
-              return <td className={`${hasCss ? colValue : ""}`} key={key}>
-              {colValue}
+        {rowData.length === 0 ? (
+          <tr>
+            <td style={{ border: 0 }} colSpan={columns.length}>
+              No data found
             </td>
-            })}
           </tr>
-        ))}
+        ) : (
+          rowData.map((candidate: ICandidate, index) => (
+            <tr key={index}>
+              {columns.map(({ key, hasCss }) => {
+                const colValue = candidate[key as keyof ICandidate];
+                return (
+                  <td className={`${hasCss ? colValue : ""}`} key={key}>
+                    {colValue}
+                  </td>
+                );
+              })}
+            </tr>
+          ))
+        )}
       </tbody>
     </table>
   );

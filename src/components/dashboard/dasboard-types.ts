@@ -15,6 +15,8 @@ export enum SortBy {
 }
 
 export type FilterProps = {
+  initialFilter: string;
+  initialFilterBy: string;
   handleSearchParams: (filter: string, filterBy: string) => void;
 };
 
@@ -25,6 +27,7 @@ export type IColumns = {
 };
 
 export type IDashboardTable = {
+  initialSortBy: string;
   columns: IColumns[];
   rowData: ICandidate[];
   handleSortSearchParams: (sort: string) => void;

@@ -8,8 +8,8 @@ type IFetchParams = {
 
 type IFetchState = {
   loading: boolean;
-  error?: any;
-  data?: any;
+  error: any;
+  data: any;
 };
 
 export const useFetch = ({ url, options }: IFetchParams): IFetchState => {

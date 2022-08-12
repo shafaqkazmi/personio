@@ -1,43 +1,52 @@
-import { useEffect, useMemo, useState } from "react";
 import { debounce } from "lodash";
-import { FilterProps, FilterType, Filter_Debounce_Timer } from "./dasboard-types";
+import { useCallback, useState } from "react";
+import {
+  FilterProps,
+  FilterType,
+  Filter_Debounce_Timer,
+} from "./dasboard-types";
 
-export const DashboardTableFilter = ({ handleSearchParams }: FilterProps) => {
-  const [filter, setFilter] = useState('');
-  const [filterBy, setFilterBy] = useState(FilterType.Name);
+export const DashboardTableFilter = ({
+  initialFilter,
+  initialFilterBy,
+  handleSearchParams,
+}: FilterProps) => {
+  const [filter, setFilter] = useState(initialFilter);
+  const [filterBy, setFilterBy] = useState(initialFilterBy);
 
-  const onFilterChange = (event: any) => {
-    setFilter(event.target.value);
-    handleSearchParams(event.target.value, filterBy);
-  };
-
-  const onFilterTypeChange = (event: any) => {
-    setFilterBy(event.target.value);
-    handleSearchParams(filter, event.target.value);
-  };
-
-  const debouncedChangeHandler = useMemo(
-    () => debounce(onFilterChange, Filter_Debounce_Timer),
+  // eslint-disable-next-line 
+  const debouncedHandler = useCallback(
+    debounce(
+      (nextValue) => handleSearchParams(nextValue, filterBy),
+      Filter_Debounce_Timer
+    ),
     []
   );
 
-  useEffect(() => {
-    return () => {
-      debouncedChangeHandler.cancel();
-    };
-  }, []);
+  const onFilterChange = ({
+    target: { value },
+  }: React.ChangeEvent<HTMLInputElement>) => {
+    setFilter(value);
+    debouncedHandler(value);
+  };
+
+  const onFilterTypeChange = ({ target: { value } }: any) => {
+    setFilterBy(value);
+    handleSearchParams(filter, value);
+  };
 
   return (
     <div className="filter">
-      <select defaultValue={filterBy} onChange={onFilterTypeChange}>
+      <select value={filterBy} onChange={onFilterTypeChange}>
         <option value={FilterType.Name}>Name</option>
         <option value={FilterType.Status}>Status</option>
         <option value={FilterType.Position}>Position</option>
       </select>
       <input
+        value={filter}
         type="text"
         placeholder="Filter by Name, Status, Position Applied"
-        onChange={debouncedChangeHandler}
+        onChange={onFilterChange}
       />
     </div>
   );

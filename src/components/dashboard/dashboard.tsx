@@ -11,11 +11,11 @@ import { DashboardTableFilter } from "./dashboard-table-filter";
 
 export const Dashboard = () => {
   const navigate = useNavigate();
+  const { data = [], loading, error } = useFetch({ url: AppConfig.defaultUrl });
   const [searchParams, setSearchParams] = useSearchParams();
-  const { data, loading, error } = useFetch({ url: AppConfig.defaultUrl });
 
   const filter = decodeURI(searchParams.get("filter") || "").trim();
-  const filterBy = searchParams.get("filterBy") || "";
+  const filterBy = searchParams.get("filterBy") || FilterType.Name;
   const sort = searchParams.get("sort") || "";
 
   const rowColumns: Array<IColumns> = [
@@ -32,11 +32,11 @@ export const Dashboard = () => {
     setSearchParams({ filter: _filter, filterBy: _filterBy, sort });
   };
 
-  const handleSortSearchParams = (_sort: string) => {
+  function handleSortSearchParams(_sort: string) {
     setSearchParams({ filter, filterBy, sort: _sort });
-  };
+  }
 
-  const sortedAndFilterData = () => {
+  function sortedAndFilterData() {
     const filteredData = data.filter((candidate: ICandidate) => {
       switch (filterBy) {
         case FilterType.Name:
@@ -57,22 +57,27 @@ export const Dashboard = () => {
     }
 
     return filteredData;
-  };
+  }
 
   return (
     <>
       <h1 className="breadcrumb" onClick={() => navigate("/")}>
         Applications
       </h1>
+      {loading && <Loader />}
       {error && <Error />}
-      {loading || (!data && <Loader />)}
-      {!loading && !error && data && (
+      {!loading && !error && (
         <>
           <div className="container">
-            <DashboardTableFilter handleSearchParams={handleSearchParams} />
+            <DashboardTableFilter
+              initialFilter={filter}
+              initialFilterBy={filterBy}
+              handleSearchParams={handleSearchParams}
+            />
           </div>
           <div className="container">
             <DashboardTable
+              initialSortBy={sort}
               columns={rowColumns}
               rowData={sortedAndFilterData()}
               handleSortSearchParams={handleSortSearchParams}
